@@ -4,7 +4,7 @@
     "keywords": [
         "VPremiss",
         "laravel",
-        "livewirenonceable"
+        "livewire-nonceable"
     ],
     "homepage": "https://github.com/VPremiss/LivewireNonceable",
     "license": "MIT",
