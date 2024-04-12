@@ -46,9 +46,7 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-livewirenonceable --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-livewire-nonceable --ansi",
         "build": [
             "@composer run prepare",
             "@php vendor/bin/testbench workbench:build --ansi"
