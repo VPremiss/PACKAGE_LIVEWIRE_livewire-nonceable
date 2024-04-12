@@ -1,93 +1,164 @@
-# :package_description
+<div align="center">
+    بسم الله الرحمن الرحيم
+</div>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+# Livewire Nonceable
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+**The security Livewire public methods needed!**
 
-## Support us
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewirenonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewirenonceable)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewirenonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewirenonceable)
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+## Description
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+The reason is to address Livewire's current weakness of forcing the developer to expose certain methods to the **`public`** in order for the front-end ([AlpineJS](https://alpinejs.dev)) to be able to communicate with it; parameters included...
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+And if you ask, why wouldn't you do everything in Livewire component anyway, WELL, how about YOU try using [Sanctum](https://laravel.com/docs/sanctum) with it and see how things go! Hitting APIs that are `auth:sanctum` middleware-protected is **impossible**. And the only approach is to rely on `axios` in your [TALL](https://tallstack.dev) views to communicate with APIs after being authenticated through Sanctum.
+
+This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from *aaANYyyWHERE!*
+
+Thanks for coming to my -talk. Enjoy the package and the awesome stacking like fine blacksmithery!
+
 
 ## Installation
 
-You can install the package via composer:
+- Ensure that both [Livewire](https://livewire.laravel.com) and [Redis](https://laravel.com/docs/redis) are installed, of course.
 
-```bash
-composer require :vendor_slug/:package_slug
-```
+- Install the package via composer:
 
-You can publish and run the migrations with:
+  ```bash
+  composer require vpremiss/livewire-nonceable
+  ```
 
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
+- Publish the [config file](config/livewire-nonceable.php) using this Artisan command:
 
-You can publish the config file with:
+  ```bash
+  php artisan vendor:publish --tag="livewire-nonceable-config"
+  ```
 
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
 
 ## Usage
 
-```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
-```
+- In your Livewire component, implement our [Noncing](src/Interfaces/Noncing.php) interface and its methods. Then apply the [Nonceable](src/Traits/Nonceable.php) trait as well.
 
-## Testing
+  ```php
+  use Livewire\Component;
+  use VPremiss\LivewireNonceable\Interfaces\Noncing;
+  use VPremiss\LivewireNonceable\Traits\Nonceable;
 
-```bash
-composer test
-```
+  class FuzzySearch extends Component implements Noncing
+  {
+      use Nonceable;
 
-## Changelog
+      public function getNonces(): array
+      {
+          return [
+              'complex-searching' => 5,
+              // 'heavy-processing' => 10,
+          ];
+      }
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+      public function getNonceUniqueId(): string
+      {
+          return auth()->user()->id; // After ensuring authentication, of course!
+      }
 
-## Contributing
+      // This method is initiated securely
+      protected function validateSearch($query)
+      {
+          // $validatedQuery = some validations
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+          $nonce = $this->generateNonce('complex-searching');
 
-## Security Vulnerabilities
+          $this->dispatch(
+              'searching-began', // receive in the SPA or API
+              query: $validatedQuery,
+              nonce: $nonce,
+          );
+      }
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+      // This is hit back from AlpineJS after axios
+      public function complexSearch($responseFromApi, $nonce)
+      {
+          // Or use the opposite ! $this->doesNonceExist($title, $nonce) method
+          if ($this->isNonceSense('complex-searching', $nonce)) {
+              // throw new NoncenseException('Nonce mismatch. Somebody is playing around!');
+          }
 
-## Credits
+          $this->deleteNonce('complex-searching', $nonce);
 
-- [:author_name](https://github.com/:author_username)
+          // ...
+      }
+  }
+  ```
+
+- And you may also utilize these 2 checking methods from the view:
+
+  ```blade
+  <div
+      x-on:searching-began.window="callApi($event.detail.query, $event.detail.nonce)"
+      x-data='{
+          callApi(query, nonce) {
+              // or the opposite ! $wire.isNonceSense(title, nonce)
+              if ($wire.doesNonceExist("complex-searching", nonce)) {
+                  axios
+                      .post(
+                          "{{ "some-route" }}",
+                          {
+                              query: query,
+                              nonce: nonce,
+                          },
+                      )
+                      .then(response => $wire.complexSearch(response, nonce))
+                      .catch(error => console.error(error));
+              }
+          },
+      }'
+  >
+     {{-- ... --}}
+  </div>
+  ```
+
+And again, just to re-cap: we cannot workaround not making the `complexSearch` method public. Because we need to call it back from the only place where Sanctum allows API calls to its protected routes: the front-end...
+
+***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/Livewire-Nonceable/discussions) section.***
+
+### API
+
+Below is the table of key methods provided by the `LivewireNonceable` package along with their descriptions:
+
+| Method                     | Description                                                                | Parameters                              | Returns/Throws                          |
+|----------------------------|----------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
+| **protected:** `generateNonce`            | Generates a nonce, stores it in Redis with a TTL, and returns the nonce.   | `string $title`                         | `string` (nonce)                        |
+| **protected:** `deleteNonce`              | Deletes a nonce from Redis if it exists and is still valid.                | `string $title, string $nonce`          | Throws `NoncenseException` if not found |
+| **public:** `doesNonceExist`           | Checks if a given nonce exists in Redis and is still valid.                | `string $title, string $nonce`          | `bool` (true if exists, false otherwise)|
+| **public:** `isNonceSense`             | Checks if a given nonce does not exist or has expired.                     | `string $title, string $nonce`          | `bool` (true if not exists, false otherwise)|
+
+
+### Changelogs
+
+You can check out the [[CHANGELOG.md]](CHANGELOG.md) file to track down all the package updates.
+
+
+## Support
+
+Support the maintenance as well as the development of [other projects](https://github.com/sponsors/VPremiss) through sponsorship or one-time [donations](https://github.com/sponsors/VPremiss?frequency=one-time&sponsor=VPremiss).
+
+### License
+
+This package is open-sourced software licensed under the [MIT license](LICENSE.md).
+
+### Credits
+
+- [ChatGPT](https://chat.openai.com)
+- [Livewire](https://github.com/Livewire)
+- [Laravel](https://github.com/Laravel)
+- [Spatie](https://github.com/Spatie)
 - [All Contributors](../../contributors)
 
-## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+<div align="center">
+   <br>والحمد لله رب العالمين
+</div>
