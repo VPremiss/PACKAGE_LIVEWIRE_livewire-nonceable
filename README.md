@@ -6,10 +6,10 @@
 
 **The security Livewire public methods needed!**
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewirenonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewirenonceable)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewirenonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewirenonceable)
+[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 
 ## Description
 
