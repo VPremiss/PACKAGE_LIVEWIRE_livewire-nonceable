@@ -10,9 +10,9 @@ trait Nonceable
 {
     use HasNoncingValidations;
 
-    private array $nonces;
+    public array $nonces;
 
-    private string $nonceUniqueId;
+    public string $nonceUniqueId;
 
     public function mountNonceable()
     {
@@ -31,7 +31,7 @@ trait Nonceable
 
     public function doesNonceExist(string $title, string $nonce): bool
     {
-        [$formattedTitle, $_] = $this->getNonceByTitle($title);
+        list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
         return Redis::exists($this->formCacheKey($formattedTitle, $nonce));
     }
@@ -57,7 +57,7 @@ trait Nonceable
 
         $formattedTitle = $this->formatCacheKey($title);
 
-        return [$formattedTitle => $this->nonces[$formattedTitle]]; // ? formattedTitle => seconds
+        return [$formattedTitle, $this->nonces[$formattedTitle]]; // ? formattedTitle, seconds
     }
 
     protected function formCacheKey(string $formattedTitle, string $nonce): string
@@ -67,7 +67,7 @@ trait Nonceable
 
     protected function generateNonce(string $title): string
     {
-        [$formattedTitle, $seconds] = $this->getNonceByTitle($title);
+        list($formattedTitle, $seconds) = $this->getNonceByTitle($title);
 
         $nonce = $this->generateNonceString();
 
@@ -78,7 +78,7 @@ trait Nonceable
 
     protected function deleteNonce(string $title, string $nonce): void
     {
-        [$formattedTitle, $_] = $this->getNonceByTitle($title);
+        list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
         if ($this->isNonceSense($title, $nonce)) {
             throw new NoncenseException('Could not find the a cachced nonce! Could not delete what was not found! :)');
