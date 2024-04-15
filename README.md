@@ -4,7 +4,7 @@
 
 # Livewire Nonceable
 
-**The security Livewire public methods needed!**
+**The security [Livewire](https://livewire.laravel.com) public methods needed!**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=flat-square)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -13,11 +13,11 @@
 
 ## Description
 
-The reason is to address Livewire's current weakness of forcing the developer to expose certain methods to the **`public`** in order for the front-end ([AlpineJS](https://alpinejs.dev)) to be able to communicate with it; parameters included...
+The reason for this package is to address Livewire's current weakness of forcing the developer to expose certain methods to the **`public`** in order for the front-end ([AlpineJS](https://alpinejs.dev)) to be able to communicate with it; parameters included...
 
-And if you ask, why wouldn't you do everything in Livewire component anyway, WELL, how about YOU try using [Sanctum](https://laravel.com/docs/sanctum) with it and see how things go! Hitting APIs that are `auth:sanctum` middleware-protected is **impossible**. And the only approach is to rely on `axios` in your [TALL](https://tallstack.dev) views to communicate with APIs after being authenticated through Sanctum.
+And if you ask, why wouldn't you do sensitive, protected stuff in Livewire component only, and why would you need to expose them in the first place? WELL, how about YOU try using [Sanctum](https://laravel.com/docs/sanctum) and see how things go! Hitting APIs that are `auth:sanctum` middleware-protected is **impossible**. And the only approach is to rely on `axios` in your [TALL](https://tallstack.dev) views to communicate with APIs after being authenticated with Sanctum.
 
-This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from *aaANYyyWHERE!*
+This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from different places.
 
 Thanks for coming to my -talk. Enjoy the package and the awesome stacking like fine blacksmithery!
 
@@ -26,13 +26,13 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
 
 - Ensure that both [Livewire](https://livewire.laravel.com) and [Redis](https://laravel.com/docs/redis) are installed, of course.
 
-- Install the package via composer:
+- Install the package via [composer](https://getcomposer.org):
 
   ```bash
   composer require vpremiss/livewire-nonceable
   ```
 
-- Publish the [config file](config/livewire-nonceable.php) using this Artisan command:
+- Publish the [config file](config/livewire-nonceable.php) using this [Artisan](https://laravel.com/docs/artisan) command:
 
   ```bash
   php artisan vendor:publish --tag="livewire-nonceable-config"
@@ -56,7 +56,7 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
       {
           return [
               'complex-searching' => 5,
-              // 'heavy-processing' => 10,
+              // 'heavy-processing' => 10, as another example
           ];
       }
 
@@ -89,7 +89,7 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
 
           $this->deleteNonce('complex-searching', $nonce);
 
-          // ...
+          // do the complex searching now with an ease of mind...
       }
   }
   ```
@@ -121,9 +121,11 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
   </div>
   ```
 
-And again, just to re-cap: we cannot workaround not making the `complexSearch` method public. Because we need to call it back from the only place where Sanctum allows API calls to its protected routes: the front-end...
+And again, just to recap: we **cannot** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
 
 ***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/Livewire-Nonceable/discussions) section.***
+
+<br>
 
 ### API
 
@@ -136,15 +138,18 @@ Below is the table of key methods provided by the `LivewireNonceable` package al
 | **public:** `doesNonceExist`           | Checks if a given nonce exists in Redis and is still valid.                | `string $title, string $nonce`          | `bool` (true if exists, false otherwise)|
 | **public:** `isNonceSense`             | Checks if a given nonce does not exist or has expired.                     | `string $title, string $nonce`          | `bool` (true if not exists, false otherwise)|
 
+<br>
 
 ### Changelogs
 
-You can check out the [[CHANGELOG.md]](CHANGELOG.md) file to track down all the package updates.
+You can check out the package's [changelogs](https://app.whatthediff.ai/changelog/github/VPremiss/Livewire-Nonceable) online via WTD.
 
 
 ## Support
 
-Support the maintenance as well as the development of [other projects](https://github.com/sponsors/VPremiss) through sponsorship or one-time [donations](https://github.com/sponsors/VPremiss?frequency=one-time&sponsor=VPremiss).
+Support ongoing package maintenance as well as the development of **other projects** through [sponsorship](https://github.com/sponsors/VPremiss) or one-time [donations](https://github.com/sponsors/VPremiss?frequency=one-time&sponsor=VPremiss) if you prefer.
+
+And may Allah accept your strive; aameen.
 
 ### License
 
@@ -156,7 +161,10 @@ This package is open-sourced software licensed under the [MIT license](LICENSE.m
 - [Livewire](https://github.com/Livewire)
 - [Laravel](https://github.com/Laravel)
 - [Spatie](https://github.com/Spatie)
+- [Graphite](https://graphite.dev)
+- [WTD](https://whatthediff.ai)
 - [All Contributors](../../contributors)
+- And the generous individuals that we've learned from and been supported by throughout our journey...
 
 
 <div align="center">
