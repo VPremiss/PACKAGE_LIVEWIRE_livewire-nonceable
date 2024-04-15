@@ -10,9 +10,9 @@ trait Nonceable
 {
     use HasNoncingValidations;
 
-    private array $nonces;
+    public array $nonces;
 
-    private string $nonceUniqueId;
+    public string $nonceUniqueId;
 
     public function mountNonceable()
     {
@@ -57,7 +57,7 @@ trait Nonceable
 
         $formattedTitle = $this->formatCacheKey($title);
 
-        return [$formattedTitle => $this->nonces[$formattedTitle]]; // ? formattedTitle => seconds
+        return [$formattedTitle, $this->nonces[$formattedTitle]]; // ? formattedTitle, seconds
     }
 
     protected function formCacheKey(string $formattedTitle, string $nonce): string
