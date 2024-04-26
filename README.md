@@ -7,8 +7,8 @@
 **The security [Livewire](https://livewire.laravel.com) public methods needed!**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge)](https://packagist.org/packages/vpremiss/livewire-nonceable)
-[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=darkgoldenrod)](https://packagist.org/packages/vpremiss/livewire-nonceable)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=for-the-badge&color=darkgreen)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=for-the-badge&color=forestgreen)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=b07d00)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 
 
 ## Description
@@ -55,7 +55,7 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
       public function getNonces(): array
       {
           return [
-              'complex-searching' => 5,
+              'complex-searching' => 5, // the nonce title, plus 5 seconds lasting in cache
               // 'heavy-processing' => 10, as another example
           ];
       }
@@ -73,13 +73,13 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
           $nonce = $this->generateNonce('complex-searching');
 
           $this->dispatch(
-              'searching-began', // receive in the SPA or API
+              'searching-began', // receive in the front-end (SPA)
               query: $validatedQuery,
               nonce: $nonce,
           );
       }
 
-      // This is hit back from AlpineJS after axios
+      // This is hit back from AlpineJS using axios
       public function complexSearch($responseFromApi, $nonce)
       {
           // Or use the opposite ! $this->doesNonceExist($title, $nonce) method
