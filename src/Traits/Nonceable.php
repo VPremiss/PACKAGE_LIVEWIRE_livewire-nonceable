@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VPremiss\LivewireNonceable\Traits;
 
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Redis; // TODO what if `predis` wasn't installed?
 use Illuminate\Support\Str;
-use VPremiss\LivewireNonceable\Exceptions\NoncenseException;
+use VPremiss\LivewireNonceable\Support\Concerns\HasNoncingValidations;
+use VPremiss\LivewireNonceable\Support\Exceptions\NoncenseException;
 
 trait Nonceable
 {
     use HasNoncingValidations;
 
     public array $nonces;
-
     public string $nonceUniqueId;
 
     public function mountNonceable()
@@ -29,29 +31,17 @@ trait Nonceable
         $this->nonceUniqueId = $this->formatCacheKey($this->getNonceUniqueId());
     }
 
-    public function doesNonceExist(string $title, string $nonce): bool
-    {
-        list($formattedTitle, $_) = $this->getNonceByTitle($title);
-
-        return Redis::exists($this->formCacheKey($formattedTitle, $nonce));
-    }
-
-    public function isNonceSense(string $title, string $nonce): bool
-    {
-        return ! $this->doesNonceExist($title, $nonce);
-    }
-
-    protected function formatCacheKey(string $key): string
+    private function formatCacheKey(string $key): string
     {
         return str($key)->kebab()->value();
     }
 
-    protected function generateNonceString(): string
+    private function generateNonceString(): string
     {
         return Str::random(40);
     }
 
-    protected function getNonceByTitle(string $title): array
+    private function getNonceByTitle(string $title): array
     {
         $this->validateNonceTitle($title);
 
@@ -60,7 +50,7 @@ trait Nonceable
         return [$formattedTitle, $this->nonces[$formattedTitle]]; // ? formattedTitle, seconds
     }
 
-    protected function formCacheKey(string $formattedTitle, string $nonce): string
+    private function formCacheKey(string $formattedTitle, string $nonce): string
     {
         return "nonce:$formattedTitle:{$this->nonceUniqueId}:$nonce";
     }
@@ -85,5 +75,17 @@ trait Nonceable
         }
 
         Redis::del($this->formCacheKey($formattedTitle, $nonce));
+    }
+
+    public function doesNonceExist(string $title, string $nonce): bool
+    {
+        list($formattedTitle, $_) = $this->getNonceByTitle($title);
+
+        return Redis::exists($this->formCacheKey($formattedTitle, $nonce));
+    }
+
+    public function isNonceSense(string $title, string $nonce): bool
+    {
+        return !$this->doesNonceExist($title, $nonce);
     }
 }

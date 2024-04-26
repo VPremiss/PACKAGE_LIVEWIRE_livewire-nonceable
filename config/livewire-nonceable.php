@@ -1,29 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
      |--------------------------------------------------------------------------
-     | Throw if Nonce attributes are long limit (bool)
-     |--------------------------------------------------------------------------
-     |
-     | Decide whether the package would throw and remind you if it found the
-     | nonce attributes (title and unique-key) used for caching are a bit
-     | long or not.
-     |
-     */
-
-    'throw_if_long' => false,
-
-    /*
-     |--------------------------------------------------------------------------
-     | Nonce attributes character length (int)
+     | Nonce key attributes character length (int)
      |--------------------------------------------------------------------------
      |
      | Determine the length of Nonce attributes' strings.
      |
      */
 
-    'attributes_length' => 40,
+    'key_attributes_length' => 40,
+
+    /*
+     |--------------------------------------------------------------------------
+     | Throw if Nonce attributes are long (bool)
+     |--------------------------------------------------------------------------
+     |
+     | Decide whether the package should throw if it found the nonce key attributes
+     | (title and unique-key) used for caching are a longer than the set length
+     | in the previous configuration.
+     |
+     */
+
+    'throw_if_key_attributes_are_long' => false,
 
 ];

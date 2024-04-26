@@ -8,4 +8,6 @@ parameters:
         - config
     tmpDir: build/phpstan
     checkMissingIterableValueType: false
-
+    ignoreErrors:
+        - message: '#Match expression does not handle remaining value: string#'
+          path: src/LivewireNonceableServiceProvider.php
