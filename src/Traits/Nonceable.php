@@ -14,7 +14,6 @@ trait Nonceable
     use HasNoncingValidations;
 
     public array $nonces;
-    public string $nonceUniqueId;
 
     public function mountNonceable()
     {
@@ -28,7 +27,6 @@ trait Nonceable
         }
 
         $this->nonces = $nonces;
-        $this->nonceUniqueId = $this->formatCacheKey($this->getNonceUniqueId());
     }
 
     private function formatCacheKey(string $key): string
@@ -52,7 +50,11 @@ trait Nonceable
 
     private function formCacheKey(string $formattedTitle, string $nonce): string
     {
-        return "nonce:$formattedTitle:{$this->nonceUniqueId}:$nonce";
+        $this->validateTheNonceUniqueId();
+
+        $uniqueId = $this->formatCacheKey($this->getNonceUniqueId());
+
+        return "nonce:$formattedTitle:{$uniqueId}:$nonce";
     }
 
     protected function generateNonce(string $title): string
@@ -81,7 +83,7 @@ trait Nonceable
     {
         list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
-        return Redis::exists($this->formCacheKey($formattedTitle, $nonce));
+        return (bool)Redis::exists($this->formCacheKey($formattedTitle, $nonce));
     }
 
     public function isNonceSense(string $title, string $nonce): bool

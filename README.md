@@ -144,6 +144,10 @@ Below is the table of key methods provided by the `LivewireNonceable` package al
 
 You can check out the package's [changelogs](https://app.whatthediff.ai/changelog/github/VPremiss/Livewire-Nonceable) online via WTD.
 
+### Progress
+
+You can also checkout the project's [roadmap](https://github.com/orgs/VPremiss/projects/8) among others in the organization's dedicated section for [projects](https://github.com/orgs/VPremiss/projects).
+
 
 ## Support
 
