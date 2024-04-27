@@ -83,7 +83,7 @@ trait Nonceable
     {
         list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
-        return Redis::exists($this->formCacheKey($formattedTitle, $nonce));
+        return (bool)Redis::exists($this->formCacheKey($formattedTitle, $nonce));
     }
 
     public function isNonceSense(string $title, string $nonce): bool
