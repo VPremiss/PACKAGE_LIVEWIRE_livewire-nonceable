@@ -17,9 +17,9 @@ The reason for this package is to address Livewire's current weakness of forcing
 
 And if you ask, why wouldn't you do sensitive, protected stuff in Livewire component only, and why would you need to expose them in the first place? WELL, how about YOU try using [Sanctum](https://laravel.com/docs/sanctum) and see how things go! Hitting APIs that are `auth:sanctum` middleware-protected is **impossible**. And the only approach is to rely on `axios` in your [TALL](https://tallstack.dev) views to communicate with APIs after being authenticated with Sanctum.
 
-This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from different places.
+This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from different places. An, yes, there **is** a unique identifier for the nonce cache key; part of the required interface.
 
-Thanks for coming to my -talk. Enjoy the package and the awesome stacking like fine blacksmithery!
+Thanks for coming to my ta- Sorry. Enjoy the package and the awesome stacking like fine blacksmithery!
 
 
 ## Installation
@@ -121,7 +121,7 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
   </div>
   ```
 
-And again, just to recap: we **cannot** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
+And again, just to recap: we **CANNOT** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
 
 ***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/Livewire-Nonceable/discussions) section.***
 
