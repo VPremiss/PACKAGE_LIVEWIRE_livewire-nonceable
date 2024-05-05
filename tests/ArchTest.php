@@ -15,7 +15,7 @@ arch('it will not use debugging functions')
     ->each->not->toBeUsed();
 
 arch('it uses strict typing everywhere')
-    ->expect('VPremiss\\Arabicable')
+    ->expect('VPremiss\\LivewireNonceable')
     ->toUseStrictTypes();
 
 test('it will not point to dependency development versions', function () {
