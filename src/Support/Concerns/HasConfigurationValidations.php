@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace VPremiss\LivewireNonceable\Support\Concerns;
 
-use VPremiss\Crafty\Facades\CraftyPackage;
 use VPremiss\Crafty\Utilities\Configurated\Exceptions\ConfiguratedValidatedConfigurationException;
 
-trait HasValidatedConfiguration
+trait HasConfigurationValidations
 {
-    protected function validateKeyAttributesLengthConfig()
+    protected function validateKeyAttributesLengthConfig($value): void
     {
-        if (!is_int(CraftyPackage::config('livewire-nonceable.key_attributes_length', $this))) {
+        if (!is_int($value)) {
             throw new ConfiguratedValidatedConfigurationException(
                 'The configuration integer for "key attributes length" is not found!'
             );
         }
     }
 
-    protected function validateThrowIfLongConfig()
+    protected function validateThrowIfLongConfig($value): void
     {
-        if (!is_bool(CraftyPackage::config('livewire-nonceable.throw_if_key_attributes_are_long', $this))) {
+        if (!is_bool($value)) {
             throw new ConfiguratedValidatedConfigurationException(
                 'The configuration boolean for "throwing if key attributes are long" is not found!'
             );

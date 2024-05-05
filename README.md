@@ -6,9 +6,10 @@
 
 **The security [Livewire](https://livewire.laravel.com) public methods needed!**
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge)](https://packagist.org/packages/vpremiss/livewire-nonceable)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=gray)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=for-the-badge&color=forestgreen)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=b07d00)](https://packagist.org/packages/vpremiss/livewire-nonceable)
+![Codecov](https://img.shields.io/codecov/c/github/VPremiss/Livewire-Nonceable?style=for-the-badge&color=purple)
+[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=blue)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 
 
 ## Description

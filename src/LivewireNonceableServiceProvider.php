@@ -7,11 +7,13 @@ namespace VPremiss\LivewireNonceable;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use VPremiss\Crafty\Utilities\Configurated\Interfaces\Configurated;
-use VPremiss\LivewireNonceable\Support\Concerns\HasValidatedConfiguration;
+use VPremiss\Crafty\Utilities\Configurated\Traits\ManagesConfigurations;
+use VPremiss\LivewireNonceable\Support\Concerns\HasConfigurationValidations;
 
 class LivewireNonceableServiceProvider extends PackageServiceProvider implements Configurated
 {
-    use HasValidatedConfiguration;
+    use ManagesConfigurations;
+    use HasConfigurationValidations;
 
     public function configurePackage(Package $package): void
     {
@@ -25,19 +27,18 @@ class LivewireNonceableServiceProvider extends PackageServiceProvider implements
             ->hasConfigFile();
     }
 
-    public function configValidation(string $configKey): void
+    public function packageRegistered()
     {
-        match ($configKey) {
-            'livewire-nonceable.key_attributes_length' => $this->validateKeyAttributesLengthConfig(),
-            'livewire-nonceable.throw_if_key_attributes_are_long' => $this->validateThrowIfLongConfig(),
-        };
+        $this->registerConfigurations();
     }
 
-    public function configDefault(string $configKey): mixed
+    public function configurationValidations(): array
     {
-        return match ($configKey) {
-            'livewire-nonceable.key_attributes_length' => 40,
-            'livewire-nonceable.throw_if_key_attributes_are_long' => false,
-        };
+        return [
+            'livewire-nonceable' => [
+                'key_attributes_length' => fn ($value) => $this->validateKeyAttributesLengthConfig($value),
+                'throw_if_key_attributes_are_long' => fn ($value) => $this->validateThrowIfLongConfig($value),
+            ],
+        ];
     }
 }
