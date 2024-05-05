@@ -6,9 +6,10 @@
 
 **The security [Livewire](https://livewire.laravel.com) public methods needed!**
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge)](https://packagist.org/packages/vpremiss/livewire-nonceable)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=gray)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewirenonceable/run-tests.yml?branch=main&label=tests&style=for-the-badge&color=forestgreen)](https://github.com/vpremiss/livewirenonceable/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=b07d00)](https://packagist.org/packages/vpremiss/livewire-nonceable)
+![Codecov](https://img.shields.io/codecov/c/github/VPremiss/Livewire-Nonceable?style=for-the-badge&color=purple)
+[![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=blue)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 
 
 ## Description
@@ -17,14 +18,16 @@ The reason for this package is to address Livewire's current weakness of forcing
 
 And if you ask, why wouldn't you do sensitive, protected stuff in Livewire component only, and why would you need to expose them in the first place? WELL, how about YOU try using [Sanctum](https://laravel.com/docs/sanctum) and see how things go! Hitting APIs that are `auth:sanctum` middleware-protected is **impossible**. And the only approach is to rely on `axios` in your [TALL](https://tallstack.dev) views to communicate with APIs after being authenticated with Sanctum.
 
-This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from different places.
+This ***back-and-forth*** will draw you to think about what to do with regard to protecting those `public` methods from being just hit from the client with ease (AKA. DDOSed). And we've concluded that a solution would be to [`NONCE`](https://computersciencewiki.org/index.php/Nonce) into Laravel's **cache instead of its session** -because of the persistance approach that Livewire works with and the need to be able to access it from different places. An, yes, there **is** a unique identifier for the nonce cache key; part of the required interface.
 
-Thanks for coming to my -talk. Enjoy the package and the awesome stacking like fine blacksmithery!
+Thanks for coming to my ta- Sorry. Enjoy the package and the awesome stacking like fine blacksmithery!
 
 
 ## Installation
 
-- Ensure that both [Livewire](https://livewire.laravel.com) and [Redis](https://laravel.com/docs/redis) are installed, of course.
+- Ensure that both [Livewire](https://livewire.laravel.com) is installed, of course.
+
+- Ensure that [cache](https://laravel.com/docs/cache) is set up properly and ready to be used.
 
 - Install the package via [composer](https://getcomposer.org):
 
@@ -121,7 +124,7 @@ Thanks for coming to my -talk. Enjoy the package and the awesome stacking like f
   </div>
   ```
 
-And again, just to recap: we **cannot** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
+And again, just to recap: we **CANNOT** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
 
 ***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/Livewire-Nonceable/discussions) section.***
 
@@ -131,12 +134,12 @@ And again, just to recap: we **cannot** work around not making the complexSearch
 
 Below is the table of key methods provided by the `LivewireNonceable` package along with their descriptions:
 
-| Method                     | Description                                                                | Parameters                              | Returns/Throws                          |
-|----------------------------|----------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
-| **protected:** `generateNonce`            | Generates a nonce, stores it in Redis with a TTL, and returns the nonce.   | `string $title`                         | `string` (nonce)                        |
-| **protected:** `deleteNonce`              | Deletes a nonce from Redis if it exists and is still valid.                | `string $title, string $nonce`          | Throws `NoncenseException` if not found |
-| **public:** `doesNonceExist`           | Checks if a given nonce exists in Redis and is still valid.                | `string $title, string $nonce`          | `bool` (true if exists, false otherwise)|
-| **public:** `isNonceSense`             | Checks if a given nonce does not exist or has expired.                     | `string $title, string $nonce`          | `bool` (true if not exists, false otherwise)|
+| Exposure   | Method                                           | Description                                                                         |
+|------------|--------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| **protected** | `generateNonce(string $title): string` | Generates a nonce, stores it in cache based on the `getNonces()` array, and returns the nonce. |
+| **protected** | `deleteNonce(string $title, string $nonce): void` | Deletes a nonce from cache if it exists and is still valid.                         |
+| **public**    | `doesNonceExist(string $title, string $nonce): bool`  | Checks if a given nonce exists in cache and is still valid.                         |
+| **public**    | `isNonceSense(string $title, string $nonce): bool`    | Checks if a given nonce does not exist or has expired.                              |
 
 <br>
 
@@ -162,12 +165,13 @@ This package is open-sourced software licensed under the [MIT license](LICENSE.m
 ### Credits
 
 - [ChatGPT](https://chat.openai.com)
-- [Livewire](https://github.com/Livewire)
-- [Laravel](https://github.com/Laravel)
-- [Spatie](https://github.com/Spatie)
 - [Graphite](https://graphite.dev)
-- [WTD](https://whatthediff.ai)
-- [All Contributors](../../contributors)
+- [Laravel](https://github.com/Laravel)
+- [Livewire](https://github.com/Livewire)
+- [Spatie](https://github.com/spatie)
+- [BeyondCode](https://beyondco.de)
+- [The Contributors](../../contributors)
+- All the [backend packages](/composer.json#23) and services this package relies on...
 - And the generous individuals that we've learned from and been supported by throughout our journey...
 
 
