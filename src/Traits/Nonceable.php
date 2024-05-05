@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VPremiss\LivewireNonceable\Traits;
 
-use Illuminate\Support\Facades\Redis; // TODO what if `predis` wasn't installed?
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use VPremiss\LivewireNonceable\Support\Concerns\HasNoncingValidations;
 use VPremiss\LivewireNonceable\Support\Exceptions\NoncenseException;
@@ -63,7 +63,7 @@ trait Nonceable
 
         $nonce = $this->generateNonceString();
 
-        Redis::setex($this->formCacheKey($formattedTitle, $nonce), $seconds, '');
+        Cache::put($this->formCacheKey($formattedTitle, $nonce), '', $seconds);
 
         return $nonce;
     }
@@ -76,14 +76,14 @@ trait Nonceable
             throw new NoncenseException('Could not find the a cachced nonce! Could not delete what was not found! :)');
         }
 
-        Redis::del($this->formCacheKey($formattedTitle, $nonce));
+        Cache::forget($this->formCacheKey($formattedTitle, $nonce));
     }
 
     public function doesNonceExist(string $title, string $nonce): bool
     {
         list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
-        return (bool)Redis::exists($this->formCacheKey($formattedTitle, $nonce));
+        return Cache::has($this->formCacheKey($formattedTitle, $nonce));
     }
 
     public function isNonceSense(string $title, string $nonce): bool

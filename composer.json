@@ -89,7 +89,7 @@
             "providers": [
                 "VPremiss\\LivewireNonceable\\LivewireNonceableServiceProvider"
             ],
-            "aliases": []
+            "aliases": {}
         }
     },
     "minimum-stability": "dev",

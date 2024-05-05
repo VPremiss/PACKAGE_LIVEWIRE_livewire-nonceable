@@ -25,7 +25,9 @@ Thanks for coming to my ta- Sorry. Enjoy the package and the awesome stacking li
 
 ## Installation
 
-- Ensure that both [Livewire](https://livewire.laravel.com) and [Redis](https://laravel.com/docs/redis) are installed, of course.
+- Ensure that both [Livewire](https://livewire.laravel.com) is installed, of course.
+
+- Ensure that [cache](https://laravel.com/docs/cache) is set up properly and ready to be used.
 
 - Install the package via [composer](https://getcomposer.org):
 
@@ -132,12 +134,12 @@ And again, just to recap: we **CANNOT** work around not making the complexSearch
 
 Below is the table of key methods provided by the `LivewireNonceable` package along with their descriptions:
 
-| Method                     | Description                                                                | Parameters                              | Returns/Throws                          |
-|----------------------------|----------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
-| **protected:** `generateNonce`            | Generates a nonce, stores it in Redis with a TTL, and returns the nonce.   | `string $title`                         | `string` (nonce)                        |
-| **protected:** `deleteNonce`              | Deletes a nonce from Redis if it exists and is still valid.                | `string $title, string $nonce`          | Throws `NoncenseException` if not found |
-| **public:** `doesNonceExist`           | Checks if a given nonce exists in Redis and is still valid.                | `string $title, string $nonce`          | `bool` (true if exists, false otherwise)|
-| **public:** `isNonceSense`             | Checks if a given nonce does not exist or has expired.                     | `string $title, string $nonce`          | `bool` (true if not exists, false otherwise)|
+| Exposure   | Method                                           | Description                                                                         |
+|------------|--------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| **protected** | `generateNonce(string $title): string` | Generates a nonce, stores it in cache based on the `getNonces()` array, and returns the nonce. |
+| **protected** | `deleteNonce(string $title, string $nonce): void` | Deletes a nonce from cache if it exists and is still valid.                         |
+| **public**    | `doesNonceExist(string $title, string $nonce): bool`  | Checks if a given nonce exists in cache and is still valid.                         |
+| **public**    | `isNonceSense(string $title, string $nonce): bool`    | Checks if a given nonce does not exist or has expired.                              |
 
 <br>
 
@@ -163,12 +165,13 @@ This package is open-sourced software licensed under the [MIT license](LICENSE.m
 ### Credits
 
 - [ChatGPT](https://chat.openai.com)
-- [Livewire](https://github.com/Livewire)
-- [Laravel](https://github.com/Laravel)
-- [Spatie](https://github.com/Spatie)
 - [Graphite](https://graphite.dev)
-- [WTD](https://whatthediff.ai)
-- [All Contributors](../../contributors)
+- [Laravel](https://github.com/Laravel)
+- [Livewire](https://github.com/Livewire)
+- [Spatie](https://github.com/spatie)
+- [BeyondCode](https://beyondco.de)
+- [The Contributors](../../contributors)
+- All the [backend packages](/composer.json#23) and services this package relies on...
 - And the generous individuals that we've learned from and been supported by throughout our journey...
 
 
