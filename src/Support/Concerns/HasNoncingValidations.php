@@ -30,16 +30,8 @@ trait HasNoncingValidations
             );
         }
 
-        if (
-            CraftyPackage::validatedConfig(
-                'livewire-nonceable.throw_if_key_attributes_are_long',
-                LivewireNonceableServiceProvider::class,
-            )
-        ) {
-            $length = CraftyPackage::validatedConfig(
-                'livewire-nonceable.key_attributes_length',
-                LivewireNonceableServiceProvider::class,
-            );
+        if (CraftyPackage::getConfiguration('livewire-nonceable.throw_if_key_attributes_are_long')) {
+            $length = CraftyPackage::getConfiguration('livewire-nonceable.key_attributes_length');
 
             if (strlen($uniqueId) > $length) {
                 throw new NoncenseException(
@@ -64,16 +56,8 @@ trait HasNoncingValidations
                 );
             }
 
-            if (
-                CraftyPackage::validatedConfig(
-                    'livewire-nonceable.throw_if_key_attributes_are_long',
-                    LivewireNonceableServiceProvider::class,
-                )
-            ) {
-                $length = CraftyPackage::validatedConfig(
-                    'livewire-nonceable.key_attributes_length',
-                    LivewireNonceableServiceProvider::class,
-                );
+            if (CraftyPackage::getConfiguration('livewire-nonceable.throw_if_key_attributes_are_long')) {
+                $length = CraftyPackage::getConfiguration('livewire-nonceable.key_attributes_length');
 
                 if (strlen($key) > $length) {
                     throw new NoncenseException(
