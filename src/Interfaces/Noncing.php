@@ -19,6 +19,17 @@ interface Noncing
      * Should make the cache key unique.
      *
      * Example: `(string)$userId`
+     * 
+     * @return string
      */
     public function getNonceUniqueId(): string;
+
+    /**
+     * Should validate for the current session (user).
+     *
+     * Example: `auth()->user()->id === $this->getNonceUniqueId()`
+     * 
+     * @return bool
+     */
+    public function getNonceValidation(): bool;
 }

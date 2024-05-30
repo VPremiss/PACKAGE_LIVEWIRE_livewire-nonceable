@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use VPremiss\LivewireNonceable\Support\Exceptions\NoncenseException;
+
 return [
 
     /*
@@ -27,5 +29,18 @@ return [
      */
 
     'throw_if_key_attributes_are_long' => false,
+
+    /*
+     |--------------------------------------------------------------------------
+     | Non-String Nonce Reaction (closure)
+     |--------------------------------------------------------------------------
+     |
+     | Define your logic to be executed if the nonce wasn't found to be a string.
+     |
+     | Which means that it was manipulated as a hacking attempt.
+     |
+     */
+
+     'non_string_nonce_reaction' => fn () => throw new NoncenseException('(≖_≖ )'),
 
 ];

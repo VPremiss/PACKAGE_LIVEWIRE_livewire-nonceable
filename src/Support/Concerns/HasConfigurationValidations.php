@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VPremiss\LivewireNonceable\Support\Concerns;
 
+use Closure;
 use VPremiss\Crafty\Utilities\Configurated\Exceptions\ConfiguratedValidatedConfigurationException;
 
 trait HasConfigurationValidations
@@ -12,7 +13,7 @@ trait HasConfigurationValidations
     {
         if (!is_int($value)) {
             throw new ConfiguratedValidatedConfigurationException(
-                'The configuration integer for "key attributes length" is not found!'
+                'The configuration INTEGER for "key attributes length" is not found!'
             );
         }
     }
@@ -21,7 +22,16 @@ trait HasConfigurationValidations
     {
         if (!is_bool($value)) {
             throw new ConfiguratedValidatedConfigurationException(
-                'The configuration boolean for "throwing if key attributes are long" is not found!'
+                'The configuration BOOLEAN for "throwing if key attributes are long" is not found!'
+            );
+        }
+    }
+    
+    protected function validateNonStringNonceReaction($value): void
+    {
+        if (!$value instanceof Closure) {
+            throw new ConfiguratedValidatedConfigurationException(
+                'The configuration CLOSURE for "non-string nonce detected reactive logic" is not found!'
             );
         }
     }

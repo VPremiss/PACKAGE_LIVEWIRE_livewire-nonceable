@@ -38,6 +38,7 @@ class LivewireNonceableServiceProvider extends PackageServiceProvider implements
             'livewire-nonceable' => [
                 'key_attributes_length' => fn ($value) => $this->validateKeyAttributesLengthConfig($value),
                 'throw_if_key_attributes_are_long' => fn ($value) => $this->validateThrowIfLongConfig($value),
+                'non_string_nonce_reaction' => fn ($value) => $this->validateNonStringNonceReaction($value),
             ],
         ];
     }
