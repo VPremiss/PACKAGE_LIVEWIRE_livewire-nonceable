@@ -1,0 +1,70 @@
+name: testing-and-analysis
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
+    paths:
+      - ".github/workflows/testing-and-analysis.yml"
+      - "**.php"
+      - "composer.json"
+      - 'phpstan.neon.dist'
+      - "phpunit.xml.dist"
+  pull_request:
+    branches:
+      - 'dev'
+    paths:
+      - ".github/workflows/testing-and-analysis.yml"
+      - "**.php"
+      - "composer.json"
+      - 'phpstan.neon.dist'
+      - "phpunit.xml.dist"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    env:
+      IN_CI: true # ? Set an environment variable to help customizing logic for CI
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo, memcached
+          coverage: xdebug
+
+      - name: Install and setup Memcached
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y memcached libmemcached-tools
+          sudo service memcached start
+
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Configure Memcached in the environment settings
+        run: |
+          echo "QUEUE_CONNECTION=memcached" >> $GITHUB_ENV
+          echo "CACHE_STORE=memcached" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:11.*" "orchestra/testbench:9.*" "nesbot/carbon:^2.63" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Execute Tests
+        run: composer green
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.4.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
