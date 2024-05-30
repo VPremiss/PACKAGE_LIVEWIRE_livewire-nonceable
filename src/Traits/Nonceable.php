@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace VPremiss\LivewireNonceable\Traits;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use VPremiss\Crafty\Facades\CraftyPackage;
 use VPremiss\LivewireNonceable\Support\Concerns\HasNoncingValidations;
 use VPremiss\LivewireNonceable\Support\Exceptions\NoncenseException;
 
@@ -79,15 +81,45 @@ trait Nonceable
         Cache::forget($this->formCacheKey($formattedTitle, $nonce));
     }
 
-    public function doesNonceExist(string $title, string $nonce): bool
+    protected function validateNonce($nonce)
     {
+        $minimumLength = CraftyPackage::getConfiguration('livewire-nonceable.key_attributes_length');
+        $failed = Validator::make(
+            ['nonce' => $nonce],
+            ['nonce' => 'required|filled|string|min:' . $minimumLength],
+        )->failed();
+
+        if ($failed) {
+            CraftyPackage::getConfiguration('livewire-nonceable.non_string_nonce_reaction')();
+        };
+    }
+
+    public function doesNonceExist(string $title, $nonce): bool
+    {
+        $this->validateNonce($nonce);
+
         list($formattedTitle, $_) = $this->getNonceByTitle($title);
 
         return Cache::has($this->formCacheKey($formattedTitle, $nonce));
     }
 
-    public function isNonceSense(string $title, string $nonce): bool
+    public function isNonceSense(string $title, $nonce): bool
     {
+        $this->validateNonce($nonce);
+
         return !$this->doesNonceExist($title, $nonce);
+    }
+
+    public function validatedNonce(string $title, $nonce): bool
+    {
+        $this->validateNonce($nonce);
+
+        if (!$this->doesNonceExist($title, $nonce)) {
+            return false;
+        }
+
+        $this->deleteNonce($title, $nonce);
+
+        return true;
     }
 }

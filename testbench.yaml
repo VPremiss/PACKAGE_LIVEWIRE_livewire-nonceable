@@ -1,23 +1,16 @@
+dont-discover:
+  - vpremiss/livewire-nonceable
+  - vpremiss/crafty
+
 providers:
-  - Workbench\App\Providers\WorkbenchServiceProvider
-
-migrations:
-  - workbench/database/migrations
-
-seeders:
-  - Workbench\Database\Seeders\DatabaseSeeder
+  - Livewire\LivewireServiceProvider
+  - VPremiss\Crafty\CraftyServiceProvider
+  - VPremiss\LivewireNonceable\LivewireNonceableServiceProvider
 
 workbench:
-  start: '/'
   install: true
-  health: false
+  build:
+    - vendor:publish --all
   discovers:
-    config: true
     web: true
-    api: false
-    commands: false
-    components: false
-    views: false
-  build: []
-  assets: []
-  sync: []
+    views: true
