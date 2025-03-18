@@ -9,7 +9,7 @@
 **The security [Livewire](https://livewire.laravel.com) public methods needed!**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=gray)](https://packagist.org/packages/vpremiss/livewire-nonceable)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewire-nonceable/testing-and-analysis.yml?branch=main&label=tests&style=for-the-badge&color=forestgreen)](https://github.com/VPremiss/Livewire-Nonceable/actions/workflows/testing-and-analysis.yml?query=branch%3Amain++)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vpremiss/livewire-nonceable/testing-and-analysis.yml?branch=main&label=tests&style=for-the-badge&color=forestgreen)](https://github.com/VPremiss/PACKAGE_LIVEWIRE_livewire-nonceable/actions/workflows/testing-and-analysis.yml?query=branch%3Amain++)
 ![Codecov](https://img.shields.io/codecov/c/github/VPremiss/Livewire-Nonceable?style=for-the-badge&color=purple)
 [![Total Downloads](https://img.shields.io/packagist/dt/vpremiss/livewire-nonceable.svg?style=for-the-badge&color=blue)](https://packagist.org/packages/vpremiss/livewire-nonceable)
 
@@ -140,7 +140,7 @@ Thanks for coming to my ta- Sorry. Enjoy the package and the awesome stacking li
 
 And again, just to recap: we **CANNOT** work around not making the complexSearch method public because we need to call it from the only place where **Sanctum** allows API calls to its protected routes: the front-end...
 
-***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/Livewire-Nonceable/discussions) section.***
+***If you found a better way to deal around this, please let us know in the [discussions](https://github.com/VPremiss/PACKAGE_LIVEWIRE_livewire-nonceable/discussions) section.***
 
 <br>
 
